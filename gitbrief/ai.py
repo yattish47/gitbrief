@@ -17,7 +17,7 @@ Rules:
 
 def generate_commit_message(diff):
     stream = client.chat.completions.create(
-        model="llama3.2",
+        model="llama3.2:3b",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": f"Write a commit message for this diff:\n\n{diff}"}
