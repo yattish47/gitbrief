@@ -4,11 +4,14 @@ from gitbrief.git import get_staged_diff
 from gitbrief.ai import generate_commit_message
 import subprocess
 
-app = typer.Typer()
+app = typer.Typer(invoke_without_command=True)
 console = Console()
 
-@app.command()
-def main():
+@app.callback(invoke_without_command=True)
+def main(ctx: typer.Context):
+    if ctx.invoked_subcommand is not None:
+        return
+    
     console.print("\n[bold cyan]gitbrief[/bold cyan] — AI commit message generator\n")
 
     with console.status("[cyan]Reading staged changes..."):
@@ -35,6 +38,11 @@ def main():
         console.print("\n[green]✓ Committed successfully![/green]")
     else:
         console.print("\n[yellow]Commit cancelled.[/yellow]")
+
+@app.command()
+def stats():
+    from gitbrief.usage import print_stats
+    print_stats()
 
 if __name__ == "__main__":
     app()
